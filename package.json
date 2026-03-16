@@ -1,0 +1,16 @@
+{
+  "name": "terminal-management-system",
+  "version": "1.0.0",
+  "description": "A Terminal Management System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0"
+  }
+}

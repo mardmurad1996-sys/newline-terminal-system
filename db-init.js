@@ -1,0 +1,1 @@
+const sqlite3 = require('sqlite3'); const db = new sqlite3.Database('./database.sqlite'); db.serialize(() => { db.run('CREATE TABLE IF NOT EXISTS trips (id INTEGER PRIMARY KEY AUTOINCREMENT, destination TEXT, status TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)'); console.log('Database initialized: trips table ready.'); }); db.close();
