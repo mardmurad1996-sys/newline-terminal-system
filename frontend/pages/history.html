@@ -1,1 +1,53 @@
-<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>History</title><link rel="stylesheet" href="../css/style.css"></head><body><nav class="navbar"><div class="nav-brand">Terminal</div><div class="nav-links"><a href="../index.html">Dashboard</a><a href="new-trip.html">New Trip</a><a href="active-trips.html">Active Trips</a><a href="history.html">History</a><a href="drivers.html">Drivers</a><a href="reports.html">Reports</a></div><div class="nav-time" id="clock">--:--:--</div></nav><div class="container"><div class="page-header"><h1>Trip History</h1></div><div class="form-card" style="margin-bottom:20px"><input type="date" id="filter-date" style="padding:10px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px"> <button class="btn btn-primary" onclick="loadHistory()" style="margin-right:10px">Filter</button></div><div class="table-card"><div class="table-wrapper"><table><thead><tr><th>#</th><th>Type</th><th>Driver</th><th>Route</th><th>Passengers</th><th>Income IQD</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="history-tbody"><tr><td colspan="9" style="text-align:center;padding:30px">Loading...</td></tr></tbody></table></div></div></div><script src="../js/history.js"></script></body></html>
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مێژووی ڕۆیشتنەکان</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">تێرمینال</div>
+        <div class="nav-links">
+            <a href="../index.html">دەشبۆرد</a>
+            <a href="new-trip.html">ڕۆیشتنی نوێ</a>
+            <a href="active-trips.html">ڕۆیشتنە چالاکەکان</a>
+            <a href="history.html" class="active">مێژووی ڕۆیشتنەکان</a>
+            <a href="drivers.html">شۆفێرەکان</a>
+            <a href="reports.html">ڕاپۆرتەکان</a>
+        </div>
+        <div class="nav-time" id="clock">--:--:--</div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>مێژووی ڕۆیشتنەکان</h1>
+            <p id="today-date">---</p>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ژمارە</th>
+                        <th>جۆر</th>
+                        <th>شۆفێر</th>
+                        <th>ڕێگە</th>
+                        <th>گەشتیاران</th>
+                        <th>بڕی پارە</th>
+                        <th>بەرواری</th>
+                        <th>کردارەکان</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 20px;">داتای بارکراودەدات...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/history.js"></script>
+</body>
+</html>

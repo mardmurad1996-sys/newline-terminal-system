@@ -1,1 +1,103 @@
-const API='http://localhost:3000/api'; function updateClock(){const n=new Date();const c=document.getElementById('clock');if(c)c.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');} function getToday(){return new Date().toISOString().split('T')[0];} async function loadReport(){const date=document.getElementById('report-date').value||getToday();const res=await fetch(API+'/reports/daily?date='+date);const data=await res.json();let ct={trips:0,passengers:0,income:0},ld={trips:0,passengers:0,income:0},bs={trips:0,passengers:0,income:0};data.data.forEach(r=>{if(r.type==='City Taxi')ct=r;if(r.type==='Long Distance')ld=r;if(r.type==='Bus')bs=r;});const tot={trips:(ct.trips||0)+(ld.trips||0)+(bs.trips||0),passengers:(ct.passengers||0)+(ld.passengers||0)+(bs.passengers||0),income:(ct.income||0)+(ld.income||0)+(bs.income||0)};document.getElementById('report-body').innerHTML='<tr><td>City Taxi</td><td>'+(ct.trips||0)+'</td><td>'+(ct.passengers||0)+'</td><td style=color:#10b981;font-weight:bold>'+Number(ct.income||0).toLocaleString()+' IQD</td></tr><tr><td>Long Distance</td><td>'+(ld.trips||0)+'</td><td>'+(ld.passengers||0)+'</td><td style=color:#10b981;font-weight:bold>'+Number(ld.income||0).toLocaleString()+' IQD</td></tr><tr><td>Bus</td><td>'+(bs.trips||0)+'</td><td>'+(bs.passengers||0)+'</td><td style=color:#10b981;font-weight:bold>'+Number(bs.income||0).toLocaleString()+' IQD</td></tr><tr style=background:#f0f2f5;font-weight:bold><td>TOTAL</td><td>'+tot.trips+'</td><td>'+tot.passengers+'</td><td style=color:#8b5cf6;font-size:18px>'+Number(tot.income).toLocaleString()+' IQD</td></tr>';document.getElementById('report-date-title').textContent='Report: '+date;} function printReport(){window.print();} document.addEventListener('DOMContentLoaded',()=>{updateClock();setInterval(updateClock,1000);document.getElementById('report-date').value=getToday();loadReport();});
+const API = 'http://localhost:3000/api';
+
+// Kurdish day names
+const kurdishDays = ['یەکشەممە', 'دووشەممە', 'سێشەممە', 'چوارشەممە', 'پێنجشەممە', 'هەینی', 'شەممە'];
+const kurdishMonths = ['جنواری', 'فیبروری', 'مارچ', 'ئاپریل', 'مەی', 'جوون', 'جولای', 'ئاگوست', 'سێپتەمبەر', 'ئۆکتۆبەر', 'نۆڤەمبەر', 'دیسەمبەر'];
+
+// Update clock
+function updateClock() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    const clockEl = document.getElementById('clock');
+    if (clockEl) clockEl.textContent = h + ':' + m + ':' + s;
+}
+
+// Format IQD currency
+function formatIQD(amount) {
+    if (!amount) return '0 IQD';
+    return Number(amount).toLocaleString() + ' IQD';
+}
+
+// Load report for selected date
+async function loadReport() {
+    const dateInput = document.getElementById('report-date').value;
+    if (!dateInput) {
+        showNotif('تکایە بەرواری دیاری بکە', 'warning');
+        return;
+    }
+
+    try {
+        const res = await fetch(API + '/reports/daily?date=' + dateInput);
+        const data = await res.json();
+        if (!data.success) {
+            showNotif('خرادی لە بارکردنی داتا', 'error');
+            return;
+        }
+
+        const report = data.data;
+        const titleEl = document.getElementById('report-date-title');
+        const dateObj = new Date(dateInput);
+        const day = kurdishDays[dateObj.getDay()];
+        const date = dateObj.getDate();
+        const month = kurdishMonths[dateObj.getMonth()];
+        const year = dateObj.getFullYear();
+        titleEl.textContent = 'ڕاپۆرتی ' + day + ' - ' + date + ' ' + month + ' ' + year;
+
+        const tbody = document.getElementById('report-body');
+        tbody.innerHTML = `
+            <tr>
+                <td>تاکسی ناو شار</td>
+                <td>${report.city_taxi_trips || 0}</td>
+                <td>${report.city_taxi_passengers || 0}</td>
+                <td>${formatIQD(report.city_taxi_income)}</td>
+            </tr>
+            <tr>
+                <td>ڕۆیشتنی دوری درێژ</td>
+                <td>${report.longdistance_trips || 0}</td>
+                <td>${report.longdistance_passengers || 0}</td>
+                <td>${formatIQD(report.longdistance_income)}</td>
+            </tr>
+            <tr>
+                <td>بوس</td>
+                <td>${report.bus_trips || 0}</td>
+                <td>${report.bus_passengers || 0}</td>
+                <td>${formatIQD(report.bus_income)}</td>
+            </tr>
+            <tr style="font-weight: bold; background-color: #f0f2f5;">
+                <td>کۆی گشتی</td>
+                <td>${report.total_trips || 0}</td>
+                <td>${report.total_passengers || 0}</td>
+                <td>${formatIQD(report.total_income)}</td>
+            </tr>
+        `;
+    } catch (err) {
+        console.error('Load error:', err);
+        showNotif('خرادی سیستم', 'error');
+    }
+}
+
+// Set today's date as default
+function setTodayDate() {
+    const today = new Date();
+    const dateStr = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    document.getElementById('report-date').value = dateStr;
+    loadReport();
+}
+
+// Show notification
+function showNotif(msg, type) {
+    const n = document.createElement('div');
+    n.className = 'notification notif-' + (type || 'info');
+    n.textContent = msg;
+    document.body.appendChild(n);
+    setTimeout(() => { n.remove(); }, 3500);
+}
+
+// Start on load
+document.addEventListener('DOMContentLoaded', function() {
+    updateClock();
+    setInterval(updateClock, 1000);
+    setTodayDate();
+});

@@ -17,13 +17,13 @@ db.run('PRAGMA foreign_keys = ON');
 db.serialize(() => {
 
     // DRIVERS TABLE - saves all drivers
-    db.run('CREATE TABLE IF NOT EXISTS drivers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT NOT NULL, car_number TEXT NOT NULL, car_type TEXT DEFAULT Taxi, status TEXT DEFAULT active, created_at TEXT DEFAULT CURRENT_TIMESTAMP)', (err) => {
+    db.run('CREATE TABLE IF NOT EXISTS drivers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, phone TEXT NOT NULL, car_number TEXT NOT NULL, car_type TEXT DEFAULT "Taxi", status TEXT DEFAULT "active", created_at TEXT DEFAULT CURRENT_TIMESTAMP)', (err) => {
         if (err) console.error('Drivers table error:', err.message);
         else console.log('Drivers table ready!');
     });
 
     // TRIPS TABLE - saves every trip
-    db.run('CREATE TABLE IF NOT EXISTS trips (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL, driver_id INTEGER, driver_name TEXT NOT NULL, driver_phone TEXT, driver_car TEXT, route_from TEXT NOT NULL, route_to TEXT NOT NULL, passengers_count INTEGER DEFAULT 0, fare_per_person REAL DEFAULT 0, total_income REAL DEFAULT 0, status TEXT DEFAULT active, start_time TEXT DEFAULT CURRENT_TIMESTAMP, end_time TEXT, notes TEXT)', (err) => {
+    db.run('CREATE TABLE IF NOT EXISTS trips (id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL, driver_id INTEGER, driver_name TEXT NOT NULL, driver_phone TEXT, driver_car TEXT, route_from TEXT NOT NULL, route_to TEXT NOT NULL, passengers_count INTEGER DEFAULT 0, fare_per_person REAL DEFAULT 0, total_income REAL DEFAULT 0, status TEXT DEFAULT "active", start_time TEXT DEFAULT CURRENT_TIMESTAMP, end_time TEXT, notes TEXT)', (err) => {
         if (err) console.error('Trips table error:', err.message);
         else console.log('Trips table ready!');
     });
@@ -38,6 +38,19 @@ db.serialize(() => {
     db.run('CREATE TABLE IF NOT EXISTS daily_summary (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT NOT NULL UNIQUE, city_taxi_trips INTEGER DEFAULT 0, city_taxi_passengers INTEGER DEFAULT 0, city_taxi_income REAL DEFAULT 0, longdistance_trips INTEGER DEFAULT 0, longdistance_passengers INTEGER DEFAULT 0, longdistance_income REAL DEFAULT 0, bus_trips INTEGER DEFAULT 0, bus_passengers INTEGER DEFAULT 0, bus_income REAL DEFAULT 0, total_trips INTEGER DEFAULT 0, total_passengers INTEGER DEFAULT 0, total_income REAL DEFAULT 0)', (err) => {
         if (err) console.error('Daily summary error:', err.message);
         else console.log('Daily summary table ready!');
+    });
+
+    // SETTINGS TABLE - for receipt counter and other settings
+    db.run('CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)', (err) => {
+        if (err) console.error('Settings table error:', err.message);
+        else {
+            console.log('Settings table ready!');
+            // Initialize receipt counter if not exists
+            db.run('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)', ['receipt_counter', '0'], (err) => {
+                if (err) console.error('Receipt counter init error:', err.message);
+                else console.log('Receipt counter initialized!');
+            });
+        }
     });
 
     console.log('All tables created!');

@@ -1,1 +1,66 @@
-<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8"><title>Drivers</title><link rel="stylesheet" href="../css/style.css"></head><body><nav class="navbar"><div class="nav-brand">Terminal</div><div class="nav-links"><a href="../index.html">Dashboard</a><a href="new-trip.html">New Trip</a><a href="active-trips.html">Active Trips</a><a href="history.html">History</a><a href="drivers.html">Drivers</a><a href="reports.html">Reports</a></div><div class="nav-time" id="clock">--:--:--</div></nav><div class="container"><div class="page-header"><h1>Driver Management</h1></div><div class="form-card"><h2>Add New Driver</h2><div class="form-grid"><div class="form-group"><label>Driver Name</label><input type="text" id="drv-name" placeholder="Full name"></div><div class="form-group"><label>Phone</label><input type="text" id="drv-phone" placeholder="0750xxxxxxx"></div><div class="form-group"><label>Car Number</label><input type="text" id="drv-car" placeholder="ABC-123"></div></div><div class="btn-group"><button class="btn btn-success" onclick="saveDriver()">Save Driver</button></div></div><div class="table-card"><h2>All Drivers</h2><input type="text" id="driver-search" placeholder="Search drivers..." style="width:100%;padding:10px;border:2px solid #e5e7eb;border-radius:8px;margin-bottom:15px;font-size:14px" oninput="filterDrivers(this.value)"><div class="table-wrapper"><table><thead><tr><th>#</th><th>Name</th><th>Phone</th><th>Car</th><th>Status</th><th>Action</th></tr></thead><tbody id="drivers-tbody"><tr><td colspan="6" style="text-align:center;padding:30px">Loading...</td></tr></tbody></table></div></div></div><script src="../js/drivers.js"></script></body></html>
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بەڕێوەبردنی شۆفێرەکان</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">تێرمینال</div>
+        <div class="nav-links">
+            <a href="../index.html">دەشبۆرد</a>
+            <a href="new-trip.html">ڕۆیشتنی نوێ</a>
+            <a href="active-trips.html">ڕۆیشتنە چالاکەکان</a>
+            <a href="history.html">مێژووی ڕۆیشتنەکان</a>
+            <a href="drivers.html" class="active">شۆفێرەکان</a>
+            <a href="reports.html">ڕاپۆرتەکان</a>
+        </div>
+        <div class="nav-time" id="clock">--:--:--</div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>بەڕێوەبردنی شۆفێرەکان</h1>
+        </div>
+
+        <div class="form-card">
+            <h2>زیادکردنی شۆفێری نوێ</h2>
+            <div class="form-group">
+                <input type="text" id="new-name" placeholder="ناوی شۆفێر" />
+                <input type="text" id="new-phone" placeholder="ژمارەی مۆبایل" />
+                <input type="text" id="new-car" placeholder="ژمارەی ئۆتۆمبێل" />
+                <select id="new-type">
+                    <option value="">جۆری ئۆتۆمبێل دیاری بکە</option>
+                    <option value="Taxi">تاکسی</option>
+                    <option value="Long Distance">دوری درێژ</option>
+                    <option value="Bus">بوس</option>
+                </select>
+                <button onclick="addDriver()" class="btn-primary">زیادکردن</button>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ژمارە</th>
+                        <th>ناوی شۆفێر</th>
+                        <th>ژمارەی مۆبایل</th>
+                        <th>ژمارەی ئۆتۆمبێل</th>
+                        <th>جۆری ئۆتۆمبێل</th>
+                        <th>کردارەکان</th>
+                    </tr>
+                </thead>
+                <tbody id="drivers-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 20px;">داتای بارکراودەدات...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/drivers.js"></script>
+</body>
+</html>
