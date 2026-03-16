@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مێژووی ڕۆیشتنەکان</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">تێرمینال</div>
+        <div class="nav-links">
+            <a href="../index.html">دەشبۆرد</a>
+            <a href="new-trip.html">ڕۆیشتنی نوێ</a>
+            <a href="active-trips.html">ڕۆیشتنە چالاکەکان</a>
+            <a href="history.html" class="active">مێژووی ڕۆیشتنەکان</a>
+            <a href="drivers.html">شۆفێرەکان</a>
+            <a href="reports.html">ڕاپۆرتەکان</a>
+        </div>
+        <div class="nav-time" id="clock">--:--:--</div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>مێژووی ڕۆیشتنەکان</h1>
+            <p id="today-date">---</p>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ژمارە</th>
+                        <th>جۆر</th>
+                        <th>شۆفێر</th>
+                        <th>ڕێگە</th>
+                        <th>گەشتیاران</th>
+                        <th>بڕی پارە</th>
+                        <th>بەرواری</th>
+                        <th>کردارەکان</th>
+                    </tr>
+                </thead>
+                <tbody id="history-body">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 20px;">داتای بارکراودەدات...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/history.js"></script>
+</body>
+</html>

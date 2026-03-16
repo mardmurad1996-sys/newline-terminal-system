@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>بەڕێوەبردنی شۆفێرەکان</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">تێرمینال</div>
+        <div class="nav-links">
+            <a href="../index.html">دەشبۆرد</a>
+            <a href="new-trip.html">ڕۆیشتنی نوێ</a>
+            <a href="active-trips.html">ڕۆیشتنە چالاکەکان</a>
+            <a href="history.html">مێژووی ڕۆیشتنەکان</a>
+            <a href="drivers.html" class="active">شۆفێرەکان</a>
+            <a href="reports.html">ڕاپۆرتەکان</a>
+        </div>
+        <div class="nav-time" id="clock">--:--:--</div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>بەڕێوەبردنی شۆفێرەکان</h1>
+        </div>
+
+        <div class="form-card">
+            <h2>زیادکردنی شۆفێری نوێ</h2>
+            <div class="form-group">
+                <input type="text" id="new-name" placeholder="ناوی شۆفێر" />
+                <input type="text" id="new-phone" placeholder="ژمارەی مۆبایل" />
+                <input type="text" id="new-car" placeholder="ژمارەی ئۆتۆمبێل" />
+                <select id="new-type">
+                    <option value="">جۆری ئۆتۆمبێل دیاری بکە</option>
+                    <option value="Taxi">تاکسی</option>
+                    <option value="Long Distance">دوری درێژ</option>
+                    <option value="Bus">بوس</option>
+                </select>
+                <button onclick="addDriver()" class="btn-primary">زیادکردن</button>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ژمارە</th>
+                        <th>ناوی شۆفێر</th>
+                        <th>ژمارەی مۆبایل</th>
+                        <th>ژمارەی ئۆتۆمبێل</th>
+                        <th>جۆری ئۆتۆمبێل</th>
+                        <th>کردارەکان</th>
+                    </tr>
+                </thead>
+                <tbody id="drivers-body">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 20px;">داتای بارکراودەدات...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../js/drivers.js"></script>
+</body>
+</html>
