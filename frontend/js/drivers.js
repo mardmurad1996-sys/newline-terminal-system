@@ -1,0 +1,9 @@
+var API = 'http://localhost:3000/api', allDrivers = [];
+function updateClock(){var n=new Date(),e=document.getElementById('clock');if(e)e.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');}
+setInterval(updateClock,1000);updateClock();
+async function loadDrivers(){var res=await fetch(API+'/drivers');var data=await res.json();allDrivers=data.data||[];renderDrivers(allDrivers);}
+function renderDrivers(drivers){var tbody=document.getElementById('drivers-tbody');if(!drivers.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:30px">No drivers</td></tr>';return;}tbody.innerHTML=drivers.map(d=>'<tr><td>'+d.id+'</td><td>'+d.name+'</td><td>'+d.phone+'</td><td>'+d.car_number+'</td><td><span class="badge badge-active">Active</span></td><td><button class="btn btn-danger" onclick="deleteDriver('+d.id+')" style="padding:6px 12px;font-size:12px">Delete</button></td></tr>').join('');}
+function filterDrivers(q){if(!q){renderDrivers(allDrivers);return;}renderDrivers(allDrivers.filter(d=>d.name.toLowerCase().includes(q.toLowerCase())||d.car_number.toLowerCase().includes(q.toLowerCase())));}
+async function saveDriver(){var name=document.getElementById('drv-name').value.trim();var phone=document.getElementById('drv-phone').value.trim();var car=document.getElementById('drv-car').value.trim();if(!name||!phone||!car){alert('Fill all!');return;}var res=await fetch(API+'/drivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,car_number:car})});var data=await res.json();if(data.success){document.getElementById('drv-name').value='';document.getElementById('drv-phone').value='';document.getElementById('drv-car').value='';loadDrivers();alert('Saved!');}}
+async function deleteDriver(id){if(!confirm('Delete?'))return;await fetch(API+'/drivers/'+id,{method:'DELETE'});loadDrivers();}
+loadDrivers();

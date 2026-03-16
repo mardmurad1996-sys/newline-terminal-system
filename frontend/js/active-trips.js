@@ -1,0 +1,7 @@
+var API = 'http://localhost:3000/api';
+function updateClock(){var n=new Date(),e=document.getElementById('clock');if(e)e.textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');}
+setInterval(updateClock,1000);updateClock();
+async function loadActive(){var res=await fetch(API+'/trips/active');var data=await res.json();var tbody=document.getElementById('active-tbody');if(!data.success||!data.data.length){tbody.innerHTML='<tr><td colspan="9" style="text-align:center;padding:30px">No active trips</td></tr>';return;}tbody.innerHTML=data.data.map(t=>'<tr><td>'+t.id+'</td><td>'+t.type+'</td><td>'+t.driver_name+'</td><td>'+t.driver_car+'</td><td>'+t.route_from+' to '+t.route_to+'</td><td>'+t.passengers_count+'</td><td>'+Number(t.total_income).toLocaleString()+' IQD</td><td>'+new Date(t.start_time).toLocaleTimeString()+'</td><td><button class="btn btn-success" onclick="completeTrip('+t.id+')" style="padding:6px 12px;font-size:12px">Complete</button> <button class="btn btn-danger" onclick="deleteTrip('+t.id+')" style="padding:6px 12px;font-size:12px">Delete</button></td></tr>').join('');}
+async function completeTrip(id){if(!confirm('Complete?'))return;await fetch(API+'/trips/'+id+'/complete',{method:'PUT',headers:{'Content-Type':'application/json'}});loadActive();}
+async function deleteTrip(id){if(!confirm('Delete?'))return;await fetch(API+'/trips/'+id,{method:'DELETE'});loadActive();}
+loadActive();setInterval(loadActive,10000);

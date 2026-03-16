@@ -1,0 +1,1 @@
+const express = require('express'); const router = express.Router(); const c = require('../controllers/passengerController'); router.get('/trip/:tripId', c.getByTrip); router.post('/', c.create); router.post('/bulk', c.bulkCreate); router.delete('/:id', c.delete); module.exports = router;
